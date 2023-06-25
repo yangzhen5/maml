@@ -7,7 +7,7 @@ try:
     import special_grads
 except KeyError as e:
     print('WARN: Cannot define MaxPoolGrad, likely already defined for this version of tensorflow: %s' % e,
-          file=sys.stderr)
+          file=sys.stderr)#重定向错误信息至某个文件
 
 from tensorflow.python.platform import flags
 from utils import mse, xent, conv_block, normalize
@@ -17,8 +17,8 @@ FLAGS = flags.FLAGS
 class MAML:
     def __init__(self, dim_input=1, dim_output=1, test_num_updates=5):
         """ must call construct_model() after initializing MAML! """
-        self.dim_input = dim_input
-        self.dim_output = dim_output
+        self.dim_input = dim_input#输入维度
+        self.dim_output = dim_output#输出维度
         self.update_lr = FLAGS.update_lr
         self.meta_lr = tf.placeholder_with_default(FLAGS.meta_lr, ())
         self.classification = False
@@ -50,7 +50,7 @@ class MAML:
     def construct_model(self, input_tensors=None, prefix='metatrain_'):
         # a: training data for inner gradient, b: test data for meta gradient
         if input_tensors is None:
-            self.inputa = tf.placeholder(tf.float32)
+            self.inputa = tf.placeholder(tf.float32)#占位
             self.inputb = tf.placeholder(tf.float32)
             self.labela = tf.placeholder(tf.float32)
             self.labelb = tf.placeholder(tf.float32)
